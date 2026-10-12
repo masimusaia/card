@@ -86,24 +86,22 @@ const CUSTOM = {
 };
 
 /* ============================================================
-   DIGITAL COMMISSIONS
-   open    — false closes the request form
-   status  — text in the status pill (e.g. how many slots are left)
-   addons  — optional extras with a fixed price
+   DIGITAL COMMISSIONS (price list, no request form)
+   types  — name, price, time, desc; img is optional (path to an example picture)
+   addons — optional extras with a fixed price
+   note   — small line under the extras ("" to hide)
    ============================================================ */
 const COMMISSIONS = {
-  open: true,
-  status: "Slots open: 2 of 3",
-  closedStatus: "Commissions are closed for now",
   types: [
-    { id: "icon", name: "Icon",       price: 1500, time: "3–5 days",  desc: "Head and shoulders, flat color." },
-    { id: "half", name: "Half-body",  price: 2500, time: "5–7 days",  desc: "Waist up, full color and shading." },
-    { id: "full", name: "Full body",  price: 3500, time: "7–10 days", desc: "Full figure, full color and shading." },
-    { id: "chib", name: "Chibi",      price: 1200, time: "3–5 days",  desc: "Cute small version, simple background." },
+    { id: "icon", name: "Icon",      price: 1500, time: "3–5 days",  desc: "Head and shoulders, flat color.",           img: "" },
+    { id: "half", name: "Half-body", price: 2500, time: "5–7 days",  desc: "Waist up, full color and shading.",         img: "" },
+    { id: "full", name: "Full body", price: 3500, time: "7–10 days", desc: "Full figure, full color and shading.",      img: "" },
+    { id: "chib", name: "Chibi",     price: 1200, time: "3–5 days",  desc: "Cute small version, simple background.",    img: "" },
   ],
   addons: [
-    { name: "Simple background", price: 500 },
-    { name: "Extra character",   price: 1000 },
+    { name: "Simple background",    price: 500 },
+    { name: "Extra character",      price: 1000 },
     { name: "Rush (within 5 days)", price: 1000 },
   ],
+  note: "Prices are for personal use. Commercial use is discussed separately.",
 };

@@ -18,19 +18,19 @@
   </header>
 
   <nav class="nav" aria-label="Site sections">
-    <a href="#links">Home</a>
-    <a href="#shop">Shop</a>
-    <a href="#custom">Custom merch</a>
-    <a href="#commissions">Commissions</a>
-    <a href="#tos">Terms</a>
+    <a href="#links" data-tab="links">Home</a>
+    <a href="#shop" data-tab="shop">Shop</a>
+    <a href="#custom" data-tab="custom">Custom merch</a>
+    <a href="#commissions" data-tab="commissions">Commissions</a>
+    <a href="#tos" data-tab="tos">Terms</a>
     <button id="cart-open" class="btn" type="button" aria-haspopup="dialog" aria-controls="cart">
       Cart <span id="cart-count" class="badge">0</span>
     </button>
   </nav>
 
-  <main>
+  <main class="wrap stage" id="stage">
     <!-- ===================== HOME: LINKS AND CONTACT ===================== -->
-    <section id="links" class="wrap hero">
+    <section id="links" class="panel hero">
       <p class="eyebrow">links &amp; contact</p>
       <h1 class="title" id="artist-name"></h1>
       <p class="lead" id="artist-tagline"></p>
@@ -46,7 +46,7 @@
     </section>
 
     <!-- ===================== SHOP ===================== -->
-    <section id="shop" class="wrap">
+    <section id="shop" class="panel" hidden>
       <h2 class="title">shop</h2>
 
       <div class="bar">
@@ -72,7 +72,7 @@
     </section>
 
     <!-- ===================== CUSTOM MERCH ===================== -->
-    <section id="custom" class="wrap block">
+    <section id="custom" class="panel" hidden>
       <h2 class="title">custom merch</h2>
       <p class="lead wide">Want your own character, logo or artwork as merch? I make small custom batches: you send the idea, I design it and handle production and shipping.</p>
       <p><span id="custom-status" class="status"></span></p>
@@ -105,46 +105,23 @@
       </div>
     </section>
 
-    <!-- ===================== DIGITAL COMMISSIONS ===================== -->
-    <section id="commissions" class="wrap block">
+    <!-- ===================== DIGITAL COMMISSIONS (price list) ===================== -->
+    <section id="commissions" class="panel" hidden>
       <h2 class="title">digital commissions</h2>
-      <p class="lead wide">Digital drawings of your characters, made for you. Choose a type, add extras if needed and send me the request.</p>
-      <p><span id="comm-status" class="status"></span></p>
+      <p class="lead wide">Digital drawings of your characters, made for you. Here are the types of work and the prices.</p>
 
       <div class="offers" id="comm-types"></div>
 
-      <h3 class="sub-title">how it works</h3>
-      <ol class="how">
-        <li>Send me a request using the form below.</li>
-        <li>I confirm the slot and the price, you pay the prepayment.</li>
-        <li>I send a sketch, you ask for changes if needed.</li>
-        <li>After the final payment I send the finished files.</li>
-      </ol>
+      <h3 class="sub-title">extras</h3>
+      <ul class="extras" id="comm-addons"></ul>
+      <p class="hint" id="comm-note"></p>
 
-      <div class="request">
-        <div id="m-form">
-          <h3>request form</h3>
-          <div class="field"><label for="m-type">Type</label><select id="m-type"></select></div>
-          <fieldset class="checks"><legend class="sr">Extras</legend><div id="m-addons"></div></fieldset>
-          <div class="field"><label for="m-use">How will you use it</label>
-            <select id="m-use"><option>Personal use</option><option>Commercial use (ask me first)</option></select></div>
-          <div class="field"><label for="m-desc">Description</label><textarea id="m-desc" rows="4" placeholder="Character, pose, mood, colors"></textarea></div>
-          <div class="field"><label for="m-refs">Reference links</label><input id="m-refs" placeholder="Links to images or a folder"></div>
-          <div class="field"><label for="m-contact">How to reach you</label><input id="m-contact" placeholder="@username on Telegram"></div>
-        </div>
-        <div>
-          <h3>your request</h3>
-          <textarea id="m-tpl" class="tpl" readonly rows="12" aria-label="Commission request"></textarea>
-          <p class="hint" id="m-total"></p>
-          <button id="m-copy" class="btn wide" type="button">Copy request</button>
-          <p class="hint">Send the copied text to me on <a data-contact href="#">Telegram</a>. Nothing is sent from this site.</p>
-        </div>
-      </div>
+      <p class="cta">Want to order? Message me on <a data-contact href="#">Telegram</a> with the type of work, a short description and references.</p>
     </section>
 
     <!-- ===================== TERMS ===================== -->
     <!-- The texts below are examples. Replace them with your own terms. -->
-    <section id="tos" class="wrap tos">
+    <section id="tos" class="panel tos" hidden>
       <div class="tos-intro">
         <h2 class="title">terms</h2>
         <p class="lead">How to order, pay and receive. If your question isn't answered here, message me on <a data-contact href="#">Telegram</a>.</p>

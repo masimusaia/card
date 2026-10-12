@@ -346,38 +346,47 @@
     ].join("\n");
   });
 
-  // digital commissions
-  setStatus("#comm-status", COMMISSIONS);
+  // digital commissions: price list
   $("#comm-types").innerHTML = COMMISSIONS.types.map((t, i) => `
     <article class="offer tint-${(i + 2) % 5}">
+      ${t.img ? `<img class="ex" src="${esc(t.img)}" alt="${esc(t.name)} example" loading="lazy">` : ""}
       <h3>${esc(t.name)}</h3>
       <p class="price">${money(t.price)}</p>
       <p>${esc(t.desc)}</p>
       <p class="meta">Time: ${esc(t.time)}</p>
     </article>`).join("");
-  $("#m-type").innerHTML = COMMISSIONS.types.map(t => `<option value="${esc(t.id)}">${esc(t.name)}, ${money(t.price)}</option>`).join("");
-  $("#m-addons").innerHTML = COMMISSIONS.addons.map((a, i) =>
-    `<label><input type="checkbox" id="m-add-${i}"> ${esc(a.name)} (+${money(a.price)})</label>`).join("");
+  $("#comm-addons").innerHTML = COMMISSIONS.addons.map(x =>
+    `<li><span>${esc(x.name)}</span><b>+${money(x.price)}</b></li>`).join("");
+  $("#comm-note").textContent = COMMISSIONS.note || "";
 
-  requestForm("m", COMMISSIONS, () => {
-    const t = COMMISSIONS.types.find(x => x.id === $("#m-type").value) || COMMISSIONS.types[0];
-    const add = COMMISSIONS.addons.filter((a, i) => $("#m-add-" + i).checked);
-    const total = t.price + add.reduce((s, a) => s + a.price, 0);
-    $("#m-total").textContent = `Estimated total: ${money(total)}. I'll confirm the final price in my reply.`;
-    return [
-      "Hi! I'd like to commission an artwork.",
-      "",
-      `Type: ${t.name} (${money(t.price)})`,
-      `Extras: ${add.length ? add.map(a => a.name).join(", ") : "none"}`,
-      `Use: ${$("#m-use").value}`,
-      `Description: ${val("m-desc")}`,
-      `References: ${val("m-refs")}`,
-      `Contact: ${val("m-contact")}`,
-      "",
-      `Estimated total: ${money(total)}`,
-      "I have read the terms.",
-    ].join("\n").replace(/\u00a0/g, " ");
+  /* ---------- cards: one visible at a time ---------- */
+  const stage = $("#stage");
+  const panels = [...document.querySelectorAll(".panel")];
+  const tabs = [...document.querySelectorAll("[data-tab]")];
+
+  function showPanel(id, scroll) {
+    if (!panels.some(p => p.id === id)) id = panels[0].id;
+    panels.forEach(p => { p.hidden = p.id !== id; });
+    tabs.forEach(t => {
+      const on = t.dataset.tab === id;
+      t.classList.toggle("on", on);
+      if (on) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current");
+    });
+    if (scroll && stage.getBoundingClientRect().top < 0) stage.scrollIntoView();
+  }
+
+  document.addEventListener("click", e => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const id = a.getAttribute("href").slice(1);
+    if (!panels.some(p => p.id === id)) return;
+    e.preventDefault();
+    showPanel(id, true);
+    history.pushState(null, "", "#" + id);
   });
+  window.addEventListener("popstate", () => showPanel(location.hash.slice(1), true));
+  window.addEventListener("hashchange", () => showPanel(location.hash.slice(1), true));
+  showPanel(location.hash.slice(1), false);
 
   renderFilters();
   renderShop();
