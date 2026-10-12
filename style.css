@@ -138,8 +138,11 @@ a:hover { background: var(--hot); text-decoration: none; }
 
 /* ============ ТоС ============ */
 .tos { display: grid; grid-template-columns: minmax(220px, 340px) 1fr; gap: clamp(24px, 6vw, 80px); align-items: start; padding-top: 24px; padding-bottom: 90px; }
-.tos-intro { position: sticky; top: 84px; }
-.tos-intro .title { margin-top: 24px; }
+.tos-intro { position: sticky; top: 84px; container-type: inline-size; }
+.tos-intro .title {
+  margin-top: 24px;
+  font-size: min(6rem, 15cqw);
+}
 
 .faq details { border-top: 1.5px solid var(--ink); }
 .faq details:last-child { border-bottom: 1.5px solid var(--ink); }
