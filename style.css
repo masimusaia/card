@@ -144,10 +144,11 @@ a:hover { background: var(--hot); text-decoration: none; }
 
 /* ============ ТоС ============ */
 .tos { display: grid; grid-template-columns: minmax(220px, 340px) 1fr; gap: clamp(24px, 6vw, 80px); align-items: start; padding-top: 24px; padding-bottom: 90px; }
-.tos-intro { position: sticky; top: 84px; container-type: inline-size; }
+.tos-intro { position: sticky; top: 84px; }
 .tos-intro .title {
   margin-top: 24px;
-  font-size: min(6rem, 15cqw);
+  font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+  overflow-wrap: anywhere;
 }
 
 .faq details { border-top: 1.5px solid var(--ink); }
@@ -259,6 +260,7 @@ body.lock { overflow: hidden; }
   #f-toggle { display: inline-flex; align-items: center; }
   .tos { grid-template-columns: 1fr; }
   .tos-intro { position: static; }
+  .tos-intro .title { font-size: clamp(2.5rem, 9vw, 6rem); }
 }
 
 @media (max-width: 520px) {
