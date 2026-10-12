@@ -9,6 +9,10 @@
   const uniq = a => [...new Set(a)];
   const KEY = "merch-cart-v1";
 
+  const FANDOMS = uniq(PRODUCTS.map(p => p.fandom));
+  const tint = p => "tint-" + (FANDOMS.indexOf(p.fandom) % 5);
+  const letter = p => esc((p.character || p.name).trim().charAt(0).toUpperCase());
+
   /* ---------- состояние ---------- */
   const filters = { fandom: "", character: "", type: "" };
   let cart = {};
@@ -18,7 +22,7 @@
     const d = JSON.parse(localStorage.getItem(KEY) || "{}");
     cart = d.cart || {};
     Object.assign(buyer, d.buyer || {});
-  } catch (e) { /* хранилище недоступно — работаем без него */ }
+  } catch (e) { /* хранилище недоступно, работаем без него */ }
 
   for (const id in cart) {
     const p = byId(id);
@@ -31,10 +35,6 @@
   };
 
   /* ---------- общие кусочки ---------- */
-  const thumb = p => p.img
-    ? `<img src="${esc(p.img)}" alt="" loading="lazy">`
-    : `<span aria-hidden="true">${SHOP.typeIcons[p.type] || "🎀"}</span>`;
-
   let toastTimer;
   function toast(text) {
     const t = $("#toast");
@@ -54,48 +54,53 @@
   function renderFilters() {
     const chars = uniq(PRODUCTS.filter(p => !filters.fandom || p.fandom === filters.fandom).map(p => p.character));
     if (filters.character && !chars.includes(filters.character)) filters.character = "";
-    chipRow("#f-fandom", uniq(PRODUCTS.map(p => p.fandom)), "fandom");
-    chipRow("#f-character", chars, "character");
     chipRow("#f-type", uniq(PRODUCTS.map(p => p.type)), "type");
+    chipRow("#f-fandom", FANDOMS, "fandom");
+    chipRow("#f-character", chars, "character");
   }
 
   /* ---------- магазин ---------- */
+  const addLabel = q => q ? `В корзине: ${q}` : "В корзину";
+
   function card(p) {
     const q = cart[p.id] || 0;
     const art = p.img
       ? `<img src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy">`
-      : `<div class="ph" aria-hidden="true">${SHOP.typeIcons[p.type] || "🎀"}</div>`;
-    return `<article class="card${p.soldOut ? " sold" : ""}">
-      <div class="art">${art}${p.soldOut ? '<span class="ribbon">нет в наличии</span>' : ""}</div>
-      <div class="card-body">
-        <h3>${esc(p.name)}</h3>
-        <ul class="tags"><li>${esc(p.fandom)}</li><li>${esc(p.character)}</li><li class="t">${esc(p.type)}</li></ul>
-        ${p.desc ? `<p class="desc">${esc(p.desc)}</p>` : ""}
-        <div class="buy">
-          <span class="price">${money(p.price)}</span>
-          <button type="button" class="btn" data-add="${esc(p.id)}"${p.soldOut ? " disabled" : ""}>${p.soldOut ? "Нет в наличии" : addLabel(q)}</button>
-        </div>
+      : `<span class="mono" aria-hidden="true">${letter(p)}</span>`;
+    return `<article class="item${p.soldOut ? " sold" : ""}">
+      <div class="shot ${tint(p)}">
+        ${art}
+        <div class="pills"><span class="pill">${esc(p.type)}</span>${p.soldOut ? '<span class="pill dark">нет в наличии</span>' : ""}</div>
+        <span class="sticker">${money(p.price)}</span>
       </div>
+      <h3>${esc(p.name)}</h3>
+      <p class="meta">${esc(p.fandom)}, ${esc(p.character)}</p>
+      ${p.desc ? `<p class="desc">${esc(p.desc)}</p>` : ""}
+      <button type="button" class="btn${q ? "" : " ghost"}" data-add="${esc(p.id)}"${p.soldOut ? " disabled" : ""}>${p.soldOut ? "Нет в наличии" : addLabel(q)}</button>
     </article>`;
   }
-  const addLabel = q => q ? `В корзине: ${q}` : "В корзину";
 
   function renderShop() {
     const list = PRODUCTS.filter(p =>
       (!filters.fandom || p.fandom === filters.fandom) &&
       (!filters.character || p.character === filters.character) &&
       (!filters.type || p.type === filters.type));
-    const active = Object.values(filters).some(Boolean);
+    const active = Object.values(filters).filter(Boolean).length;
     $("#count").textContent = list.length ? `Найдено: ${list.length}` : "";
     $("#reset").hidden = !active;
+    $("#f-badge").hidden = !active;
+    $("#f-badge").textContent = active;
     $("#grid").innerHTML = list.length
       ? list.map(card).join("")
-      : `<p class="empty">Ничего не нашлось 🥲 Попробуй другое сочетание.</p>`;
+      : `<p class="empty">Ничего не нашлось. Попробуй другое сочетание фильтров.</p>`;
   }
 
   function refreshAddButtons() {
     document.querySelectorAll("[data-add]").forEach(b => {
-      if (!b.disabled) b.textContent = addLabel(cart[b.dataset.add] || 0);
+      if (b.disabled) return;
+      const q = cart[b.dataset.add] || 0;
+      b.textContent = addLabel(q);
+      b.classList.toggle("ghost", !q);
     });
   }
 
@@ -118,7 +123,7 @@
     const lines = t.rows.map((r, i) =>
       `${i + 1}. ${r.p.name} (${r.p.fandom}, ${r.p.character}): ${r.q} × ${money(r.p.price)} = ${money(r.p.price * r.q)}`);
     return [
-      "Привет! Хочу сделать заказ 💖",
+      "Привет! Хочу сделать заказ.",
       "",
       "Заказ:",
       ...lines,
@@ -132,7 +137,7 @@
       `Адрес и индекс: ${buyer.address.trim() || "—"}`,
       `Связь: ${buyer.contact.trim() || "—"}`,
       "",
-      "С условиями (ТоС) ознакомился(лась) ✅",
+      "С условиями (ТоС) ознакомился(лась).",
     ].join("\n").replace(/\u00a0/g, " ");
   }
 
@@ -149,7 +154,7 @@
 
     $("#cart-items").innerHTML = t.rows.map(({ p, q }) => `
       <li class="line">
-        <div class="th">${thumb(p)}</div>
+        <div class="th ${tint(p)}">${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy">` : letter(p)}</div>
         <div class="info">
           <strong>${esc(p.name)}</strong>
           <span class="sub">${esc(p.fandom)}, ${esc(p.character)}</span>
@@ -167,7 +172,7 @@
 
     $("#sum-items").textContent = money(t.sub);
     $("#sum-ship-label").textContent = `Доставка (${t.z.days})`;
-    $("#sum-ship").textContent = t.free ? "бесплатно 🎉" : money(t.ship);
+    $("#sum-ship").textContent = t.free ? "бесплатно" : money(t.ship);
     $("#sum-total").textContent = money(t.total);
 
     const left = t.z.freeFrom ? t.z.freeFrom - t.sub : 0;
@@ -214,10 +219,10 @@
       ta.select();
       try { ok = document.execCommand("copy"); } catch (e2) { ok = false; }
     }
-    toast(ok ? "Шаблон скопирован! Отправь его автору 💖" : "Не вышло скопировать, выдели текст вручную");
+    toast(ok ? "Шаблон скопирован. Отправь его автору" : "Не вышло скопировать, выдели текст вручную");
     if (ok) {
       const b = $("#copy");
-      b.textContent = "Скопировано ✓";
+      b.textContent = "Скопировано";
       setTimeout(() => { b.textContent = "Скопировать шаблон"; }, 2000);
     }
   }
@@ -237,12 +242,17 @@
     renderShop();
   });
 
+  $("#f-toggle").addEventListener("click", e => {
+    const open = $("#filters").classList.toggle("open");
+    e.currentTarget.setAttribute("aria-expanded", open);
+  });
+
   $("#grid").addEventListener("click", e => {
     const b = e.target.closest("[data-add]");
     if (!b || b.disabled) return;
     const id = b.dataset.add;
     setQty(id, (cart[id] || 0) + 1);
-    toast("Добавлено в корзину 🛍");
+    toast("Добавлено в корзину");
   });
 
   $("#cart-items").addEventListener("click", e => {

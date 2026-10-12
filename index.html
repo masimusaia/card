@@ -7,17 +7,17 @@
   <meta name="description" content="Брелоки и стикеры от художника">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&family=Rubik+Bubbles&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- ✨✨✨ ВСТАВЬ СВОЮ ШАПКУ СЮДА ✨✨✨ -->
+  <!-- ВСТАВЬ СВОЮ ШАПКУ СЮДА -->
   <header id="site-header"></header>
 
   <nav class="nav" aria-label="Разделы сайта">
     <a href="#shop">Магазин</a>
-    <a href="#tos">Условия и доставка</a>
+    <a href="#tos">Условия</a>
     <button id="cart-open" class="btn" type="button" aria-haspopup="dialog" aria-controls="cart">
       Корзина <span id="cart-count" class="badge">0</span>
     </button>
@@ -26,78 +26,108 @@
   <main>
     <!-- ===================== МАГАЗИН ===================== -->
     <section id="shop" class="wrap">
-      <h2 class="title">Магазин</h2>
-      <p class="lead">Выбери фандом, персонажа или тип мерча</p>
+      <h2 class="title">магазин</h2>
 
-      <div class="filters" id="filters">
-        <fieldset><legend>Фандом</legend><div class="chips" id="f-fandom"></div></fieldset>
-        <fieldset><legend>Персонаж</legend><div class="chips" id="f-character"></div></fieldset>
-        <fieldset><legend>Тип мерча</legend><div class="chips" id="f-type"></div></fieldset>
+      <div class="bar">
+        <span id="count" class="count" aria-live="polite"></span>
+        <button id="f-toggle" class="btn ghost small" type="button" aria-expanded="false" aria-controls="filters">
+          Фильтры <span id="f-badge" class="badge" hidden>0</span>
+        </button>
       </div>
 
-      <p class="found" aria-live="polite">
-        <span id="count"></span>
-        <button id="reset" class="link" type="button" hidden>Сбросить фильтры</button>
-      </p>
+      <div class="shop-layout">
+        <aside class="filters" id="filters" aria-label="Фильтры">
+          <div class="f-head">
+            <h3>фильтры</h3>
+            <button id="reset" class="link" type="button" hidden>Сбросить</button>
+          </div>
+          <fieldset><legend>Тип мерча</legend><div class="chips" id="f-type"></div></fieldset>
+          <fieldset><legend>Фандом</legend><div class="chips" id="f-fandom"></div></fieldset>
+          <fieldset><legend>Персонаж</legend><div class="chips" id="f-character"></div></fieldset>
+        </aside>
 
-      <div class="grid" id="grid"></div>
+        <div class="grid" id="grid"></div>
+      </div>
     </section>
 
     <!-- ===================== ТоС ===================== -->
     <!-- Тексты ниже — примеры. Замени на свои условия. -->
     <section id="tos" class="wrap tos">
-      <h2 class="title">Условия</h2>
+      <div class="tos-intro">
+        <h2 class="title">условия</h2>
+        <p class="lead">Как заказать, оплатить и получить. Если здесь нет ответа на твой вопрос, напиши мне в <a data-contact href="#">Telegram</a>.</p>
+      </div>
 
-      <div class="paper">
-        <h3>Как сделать заказ</h3>
-        <ol>
-          <li>Собери корзину в магазине.</li>
-          <li>Выбери страну доставки — стоимость посчитается сама.</li>
-          <li>Заполни данные получателя и скопируй шаблон заказа.</li>
-          <li>Отправь шаблон мне в <a data-contact href="#">Telegram</a>.</li>
-          <li>Я отвечу, подтвержу наличие и итоговую сумму и пришлю реквизиты для оплаты.</li>
-        </ol>
-        <p>Сайт ничего не отправляет автоматически: заказ оформляется только сообщением мне.</p>
+      <div class="faq">
+        <details open>
+          <summary>Как сделать заказ</summary>
+          <div class="ans">
+            <ol>
+              <li>Собери корзину в магазине.</li>
+              <li>Выбери страну доставки, стоимость посчитается сама.</li>
+              <li>Заполни данные получателя и скопируй шаблон заказа.</li>
+              <li>Отправь шаблон мне в <a data-contact href="#">Telegram</a>.</li>
+              <li>Я отвечу, подтвержу наличие и итоговую сумму и пришлю реквизиты для оплаты.</li>
+            </ol>
+            <p>Сайт ничего не отправляет автоматически: заказ оформляется только сообщением мне.</p>
+          </div>
+        </details>
 
-        <h3>Оплата</h3>
-        <p>Оплата переводом после того, как я подтвержу заказ. Заказ резервируется на 3 дня, если за это время оплаты нет, он отменяется.</p>
+        <details>
+          <summary>Оплата</summary>
+          <div class="ans">
+            <p>Оплата переводом после того, как я подтвержу заказ. Заказ резервируется на 3 дня, если за это время оплаты нет, он отменяется.</p>
+          </div>
+        </details>
 
-        <h3>Доставка</h3>
-        <p>Отправляю в течение 5 рабочих дней после оплаты. Стоимость = базовая ставка + доплата за каждые 100 г веса заказа. В корзине она считается автоматически, итог я подтверждаю в ответном сообщении.</p>
-        <div class="table-scroll">
-          <table>
-            <thead>
-              <tr><th scope="col">Куда</th><th scope="col">Срок</th><th scope="col">Базовая ставка</th><th scope="col">За каждые 100 г</th><th scope="col">Бесплатно</th></tr>
-            </thead>
-            <tbody id="tos-zones"></tbody>
-          </table>
-        </div>
-        <p>Сроки указаны примерные, их определяет почта. Трек-номер пришлю сразу после отправки.</p>
+        <details>
+          <summary>Доставка и сроки</summary>
+          <div class="ans">
+            <p>Отправляю в течение 5 рабочих дней после оплаты. Стоимость = базовая ставка + доплата за каждые 100 г веса заказа. В корзине она считается автоматически, итог я подтверждаю в ответном сообщении.</p>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr><th scope="col">Куда</th><th scope="col">Срок</th><th scope="col">Базовая ставка</th><th scope="col">За каждые 100 г</th><th scope="col">Бесплатно</th></tr>
+                </thead>
+                <tbody id="tos-zones"></tbody>
+              </table>
+            </div>
+            <p>Сроки примерные, их определяет почта. Трек-номер пришлю сразу после отправки.</p>
+          </div>
+        </details>
 
-        <h3>Если что-то пошло не так</h3>
-        <p>Если пришёл брак или не то, что заказывали, напиши мне в течение 7 дней и приложи фото с распаковки. Я заменю товар или верну деньги. Если посылка потерялась в пути, будем разбираться вместе с почтой.</p>
+        <details>
+          <summary>Если что-то пошло не так</summary>
+          <div class="ans">
+            <p>Если пришёл брак или не то, что заказывали, напиши мне в течение 7 дней и приложи фото с распаковки. Я заменю товар или верну деньги. Если посылка потерялась в пути, будем разбираться вместе с почтой.</p>
+          </div>
+        </details>
 
-        <h3>Авторские права</h3>
-        <p>Все рисунки мои. Работы по фандомам это неофициальный фанарт. Перепродавать мерч и использовать мои рисунки без договорённости нельзя.</p>
+        <details>
+          <summary>Авторские права</summary>
+          <div class="ans">
+            <p>Все рисунки мои. Работы по фандомам это неофициальный фанарт. Перепродавать мерч и использовать мои рисунки без договорённости нельзя.</p>
+          </div>
+        </details>
       </div>
     </section>
   </main>
 
   <footer class="foot">
-    <p>Сделано с любовью 💖 Свои вопросы пиши в <a data-contact href="#">Telegram</a></p>
+    <p>Вопросы и заказы: <a data-contact href="#">Telegram</a></p>
   </footer>
 
   <!-- ===================== КОРЗИНА ===================== -->
   <div id="overlay" class="overlay"></div>
   <aside id="cart" class="cart" role="dialog" aria-modal="true" aria-labelledby="cart-title" inert>
     <div class="cart-head">
-      <h2 id="cart-title">Корзина</h2>
-      <button id="cart-close" class="x big" type="button" aria-label="Закрыть корзину">✕</button>
+      <h2 id="cart-title">корзина</h2>
+      <button id="cart-close" class="x" type="button" aria-label="Закрыть корзину">✕</button>
     </div>
 
     <div class="cart-scroll">
       <div id="cart-empty" class="cart-empty">
-        <p>Здесь пока пусто 🎀</p>
+        <p>Здесь пока пусто.</p>
         <button id="cart-shop" class="btn" type="button">Выбрать мерч</button>
       </div>
 
@@ -116,12 +146,12 @@
         </dl>
         <p id="ship-hint" class="hint"></p>
 
-        <h3 class="cart-sub">Данные получателя</h3>
+        <h3 class="cart-sub">данные получателя</h3>
         <div class="field"><label for="b-name">ФИО</label><input id="b-name" autocomplete="name"></div>
         <div class="field"><label for="b-address">Адрес и индекс</label><input id="b-address" autocomplete="street-address"></div>
         <div class="field"><label for="b-contact">Как с тобой связаться</label><input id="b-contact" placeholder="@ник в Telegram"></div>
 
-        <h3 class="cart-sub">Шаблон заказа</h3>
+        <h3 class="cart-sub">шаблон заказа</h3>
         <textarea id="tpl" readonly rows="12" aria-label="Шаблон заказа"></textarea>
         <button id="copy" class="btn wide" type="button">Скопировать шаблон</button>
         <p class="hint">Отправь скопированный текст мне в <a data-contact href="#">Telegram</a>. Корзина и данные хранятся только в твоём браузере.</p>
