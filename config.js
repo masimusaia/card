@@ -48,3 +48,62 @@ const PRODUCTS = [
   { id: "k4", name: "Character 3 Keychain",       type: "Keychains", fandom: "Fandom B", character: "Character 3", price: 400, weight: 25, img: "", desc: "Acrylic, 7 cm.", soldOut: true },
   { id: "s5", name: "Fandom B Sticker Pack",      type: "Stickers",  fandom: "Fandom B", character: "Character 3", price: 250, weight: 15, img: "", desc: "5 vinyl stickers." },
 ];
+
+/* ============================================================
+   HOME BLOCK: your name, short intro and links
+   ============================================================ */
+const ARTIST = {
+  name: "Your Name",
+  tagline: "Illustrator and merch maker. Original characters, fan art, acrylic keychains and stickers. Open for custom merch and digital commissions.",
+};
+
+/* name — label, text — what is shown on the right, url — where it leads, note — small caption */
+const LINKS = [
+  { name: "Telegram",    text: "@your_nick",        url: "https://t.me/your_nick",           note: "Fastest way to reach me" },
+  { name: "Instagram",   text: "@your_nick",        url: "https://instagram.com/your_nick",  note: "Art and shop updates" },
+  { name: "X / Twitter", text: "@your_nick",        url: "https://x.com/your_nick",          note: "Sketches and news" },
+  { name: "Boosty",      text: "your_nick",         url: "https://boosty.to/your_nick",      note: "Behind the scenes and early access" },
+  { name: "Email",       text: "hello@example.com", url: "mailto:hello@example.com",         note: "Business inquiries" },
+];
+
+/* ============================================================
+   CUSTOM MERCH (made to order)
+   open     — false closes the request form
+   status   — text in the status pill
+   from     — starting price per piece (null = "ask")
+   minQty   — minimum quantity
+   ============================================================ */
+const CUSTOM = {
+  open: true,
+  status: "Taking custom orders",
+  closedStatus: "Custom orders are closed for now",
+  types: [
+    { id: "c-key",   name: "Acrylic keychains", from: 450, minQty: 5,  time: "2–4 weeks", desc: "Double-sided print, up to 7 cm." },
+    { id: "c-stk",   name: "Vinyl stickers",    from: 150, minQty: 10, time: "1–3 weeks", desc: "Waterproof, die-cut or sheets." },
+    { id: "c-pin",   name: "Enamel pins",       from: 700, minQty: 20, time: "4–6 weeks", desc: "Hard enamel, metal backing." },
+    { id: "c-other", name: "Something else",    from: null, minQty: 1, time: "ask me",    desc: "Standees, charms, prints. Tell me your idea." },
+  ],
+};
+
+/* ============================================================
+   DIGITAL COMMISSIONS
+   open    — false closes the request form
+   status  — text in the status pill (e.g. how many slots are left)
+   addons  — optional extras with a fixed price
+   ============================================================ */
+const COMMISSIONS = {
+  open: true,
+  status: "Slots open: 2 of 3",
+  closedStatus: "Commissions are closed for now",
+  types: [
+    { id: "icon", name: "Icon",       price: 1500, time: "3–5 days",  desc: "Head and shoulders, flat color." },
+    { id: "half", name: "Half-body",  price: 2500, time: "5–7 days",  desc: "Waist up, full color and shading." },
+    { id: "full", name: "Full body",  price: 3500, time: "7–10 days", desc: "Full figure, full color and shading." },
+    { id: "chib", name: "Chibi",      price: 1200, time: "3–5 days",  desc: "Cute small version, simple background." },
+  ],
+  addons: [
+    { name: "Simple background", price: 500 },
+    { name: "Extra character",   price: 1000 },
+    { name: "Rush (within 5 days)", price: 1000 },
+  ],
+};

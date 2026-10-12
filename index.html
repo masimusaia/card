@@ -14,11 +14,14 @@
 
   <!-- HEADER IMAGE: put your picture at img/header.jpg (about 1600×500) -->
   <header id="site-header">
-    <img src="img/header.png" onerror="this.remove()">
+    <img src="img/header.png" alt="Shop name" onerror="this.remove()">
   </header>
 
   <nav class="nav" aria-label="Site sections">
+    <a href="#links">Home</a>
     <a href="#shop">Shop</a>
+    <a href="#custom">Custom merch</a>
+    <a href="#commissions">Commissions</a>
     <a href="#tos">Terms</a>
     <button id="cart-open" class="btn" type="button" aria-haspopup="dialog" aria-controls="cart">
       Cart <span id="cart-count" class="badge">0</span>
@@ -26,6 +29,22 @@
   </nav>
 
   <main>
+    <!-- ===================== HOME: LINKS AND CONTACT ===================== -->
+    <section id="links" class="wrap hero">
+      <p class="eyebrow">links &amp; contact</p>
+      <h1 class="title" id="artist-name"></h1>
+      <p class="lead" id="artist-tagline"></p>
+
+      <div class="links-grid" id="links-list"></div>
+
+      <h2 class="sub-title">what I do</h2>
+      <div class="tiles">
+        <a class="tile tint-0" href="#shop"><strong>Shop</strong><span>Keychains and stickers in stock</span></a>
+        <a class="tile tint-1" href="#custom"><strong>Custom merch</strong><span>Your idea made into merch</span></a>
+        <a class="tile tint-2" href="#commissions"><strong>Digital commissions</strong><span>Drawings made for you</span></a>
+      </div>
+    </section>
+
     <!-- ===================== SHOP ===================== -->
     <section id="shop" class="wrap">
       <h2 class="title">shop</h2>
@@ -49,6 +68,77 @@
         </aside>
 
         <div class="grid" id="grid"></div>
+      </div>
+    </section>
+
+    <!-- ===================== CUSTOM MERCH ===================== -->
+    <section id="custom" class="wrap block">
+      <h2 class="title">custom merch</h2>
+      <p class="lead wide">Want your own character, logo or artwork as merch? I make small custom batches: you send the idea, I design it and handle production and shipping.</p>
+      <p><span id="custom-status" class="status"></span></p>
+
+      <div class="offers" id="custom-types"></div>
+
+      <h3 class="sub-title">how it works</h3>
+      <ol class="how">
+        <li>Send me a request using the form below.</li>
+        <li>I reply with a mockup, the final price and the timeline.</li>
+        <li>You confirm and pay the prepayment, then I start production.</li>
+        <li>I ship the batch and send you the tracking number.</li>
+      </ol>
+
+      <div class="request">
+        <div id="c-form">
+          <h3>request form</h3>
+          <div class="field"><label for="c-type">What do you want</label><select id="c-type"></select></div>
+          <div class="field"><label for="c-qty">Quantity</label><input id="c-qty" type="number" min="1" inputmode="numeric"><span class="hint" id="c-hint"></span></div>
+          <div class="field"><label for="c-desc">Your idea</label><textarea id="c-desc" rows="4" placeholder="Characters, size, colors, anything important"></textarea></div>
+          <div class="field"><label for="c-refs">Reference links</label><input id="c-refs" placeholder="Links to images or a folder"></div>
+          <div class="field"><label for="c-contact">How to reach you</label><input id="c-contact" placeholder="@username on Telegram"></div>
+        </div>
+        <div>
+          <h3>your request</h3>
+          <textarea id="c-tpl" class="tpl" readonly rows="12" aria-label="Custom merch request"></textarea>
+          <button id="c-copy" class="btn wide" type="button">Copy request</button>
+          <p class="hint">Send the copied text to me on <a data-contact href="#">Telegram</a>. Nothing is sent from this site.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== DIGITAL COMMISSIONS ===================== -->
+    <section id="commissions" class="wrap block">
+      <h2 class="title">digital commissions</h2>
+      <p class="lead wide">Digital drawings of your characters, made for you. Choose a type, add extras if needed and send me the request.</p>
+      <p><span id="comm-status" class="status"></span></p>
+
+      <div class="offers" id="comm-types"></div>
+
+      <h3 class="sub-title">how it works</h3>
+      <ol class="how">
+        <li>Send me a request using the form below.</li>
+        <li>I confirm the slot and the price, you pay the prepayment.</li>
+        <li>I send a sketch, you ask for changes if needed.</li>
+        <li>After the final payment I send the finished files.</li>
+      </ol>
+
+      <div class="request">
+        <div id="m-form">
+          <h3>request form</h3>
+          <div class="field"><label for="m-type">Type</label><select id="m-type"></select></div>
+          <fieldset class="checks"><legend class="sr">Extras</legend><div id="m-addons"></div></fieldset>
+          <div class="field"><label for="m-use">How will you use it</label>
+            <select id="m-use"><option>Personal use</option><option>Commercial use (ask me first)</option></select></div>
+          <div class="field"><label for="m-desc">Description</label><textarea id="m-desc" rows="4" placeholder="Character, pose, mood, colors"></textarea></div>
+          <div class="field"><label for="m-refs">Reference links</label><input id="m-refs" placeholder="Links to images or a folder"></div>
+          <div class="field"><label for="m-contact">How to reach you</label><input id="m-contact" placeholder="@username on Telegram"></div>
+        </div>
+        <div>
+          <h3>your request</h3>
+          <textarea id="m-tpl" class="tpl" readonly rows="12" aria-label="Commission request"></textarea>
+          <p class="hint" id="m-total"></p>
+          <button id="m-copy" class="btn wide" type="button">Copy request</button>
+          <p class="hint">Send the copied text to me on <a data-contact href="#">Telegram</a>. Nothing is sent from this site.</p>
+        </div>
       </div>
     </section>
 
@@ -102,6 +192,20 @@
           <summary>If something goes wrong</summary>
           <div class="ans">
             <p>If an item arrives defective or isn't what you ordered, message me within 7 days and attach an unboxing photo. I'll replace the item or refund you. If a parcel is lost in transit, we'll sort it out together with the postal service.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>Custom merch</summary>
+          <div class="ans">
+            <p>The minimum quantity and the price depend on the product. After your request I send a mockup and a quote. Production starts after a 50% prepayment, the rest is paid before shipping. The mockup includes up to 2 rounds of changes. Custom orders can't be refunded once production has started.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>Digital commissions</summary>
+          <div class="ans">
+            <p>Payment is split: 50% before I start, the rest after the sketch is approved and before I send the final files. The price includes 2 rounds of small changes on the sketch. Commissions are for personal use unless we agree otherwise, commercial use costs extra. I may decline requests I'm not comfortable drawing, and I may show finished work in my portfolio.</p>
           </div>
         </details>
 

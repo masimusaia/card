@@ -212,18 +212,16 @@
   }
 
   /* ---------- copying ---------- */
-  async function copyTemplate() {
-    const ta = $("#tpl");
+  async function copyText(ta, btn, label) {
     let ok = false;
     try { await navigator.clipboard.writeText(ta.value); ok = true; } catch (e) {
       ta.select();
       try { ok = document.execCommand("copy"); } catch (e2) { ok = false; }
     }
-    toast(ok ? "Template copied. Send it to the author" : "Couldn't copy, select the text manually");
+    toast(ok ? "Copied. Send it to the author" : "Couldn't copy, select the text manually");
     if (ok) {
-      const b = $("#copy");
-      b.textContent = "Copied";
-      setTimeout(() => { b.textContent = "Copy template"; }, 2000);
+      btn.textContent = "Copied";
+      setTimeout(() => { btn.textContent = label; }, 2000);
     }
   }
 
@@ -268,7 +266,7 @@
   $("#cart-shop").addEventListener("click", () => { closeCart(); location.hash = "#shop"; });
   $("#overlay").addEventListener("click", closeCart);
   document.addEventListener("keydown", e => { if (e.key === "Escape" && cartEl.classList.contains("open")) closeCart(); });
-  $("#copy").addEventListener("click", copyTemplate);
+  $("#copy").addEventListener("click", () => copyText($("#tpl"), $("#copy"), "Copy template"));
 
   $("#zone").addEventListener("change", e => { buyer.zone = e.target.value; save(); renderCart(); });
   [["#b-name", "name"], ["#b-address", "address"], ["#b-contact", "contact"]].forEach(([sel, key]) => {
@@ -290,6 +288,95 @@
     a.textContent = SHOP.contact.name + " " + SHOP.contact.text;
     a.target = "_blank";
     a.rel = "noopener";
+  });
+
+  /* ---------- home: links ---------- */
+  $("#artist-name").textContent = ARTIST.name;
+  $("#artist-tagline").textContent = ARTIST.tagline;
+  $("#links-list").innerHTML = LINKS.map(l =>
+    `<a class="link-card" href="${esc(l.url)}"${/^https?:/.test(l.url) ? ' target="_blank" rel="noopener"' : ""}>
+      <span><strong>${esc(l.name)}</strong><span class="note">${esc(l.note || "")}</span></span>
+      <span class="go">${esc(l.text)} ↗</span>
+    </a>`).join("");
+
+  /* ---------- custom merch and commissions ---------- */
+  const val = id => $("#" + id).value.trim() || "—";
+
+  function setStatus(sel, cfg) {
+    const el = $(sel);
+    el.textContent = (cfg.open ? "● " : "○ ") + (cfg.open ? cfg.status : cfg.closedStatus);
+    el.classList.toggle("closed", !cfg.open);
+  }
+
+  function requestForm(prefix, cfg, build) {
+    const ta = $("#" + prefix + "-tpl"), btn = $("#" + prefix + "-copy");
+    const render = () => { ta.value = build(); };
+    $("#" + prefix + "-form").addEventListener("input", render);
+    $("#" + prefix + "-form").addEventListener("change", render);
+    btn.disabled = !cfg.open;
+    btn.addEventListener("click", () => copyText(ta, btn, "Copy request"));
+    render();
+  }
+
+  // custom merch
+  setStatus("#custom-status", CUSTOM);
+  $("#custom-types").innerHTML = CUSTOM.types.map((t, i) => `
+    <article class="offer tint-${i % 5}">
+      <h3>${esc(t.name)}</h3>
+      <p class="price">${t.from == null ? "ask me" : "from " + money(t.from)}</p>
+      <p>${esc(t.desc)}</p>
+      <p class="meta">Minimum: ${t.minQty} pcs<br>Time: ${esc(t.time)}</p>
+    </article>`).join("");
+  $("#c-type").innerHTML = CUSTOM.types.map(t => `<option value="${esc(t.id)}">${esc(t.name)}</option>`).join("");
+
+  requestForm("c", CUSTOM, () => {
+    const t = CUSTOM.types.find(x => x.id === $("#c-type").value) || CUSTOM.types[0];
+    $("#c-qty").min = t.minQty;
+    $("#c-hint").textContent = `Minimum for this item: ${t.minQty} pcs.`;
+    return [
+      "Hi! I'd like to request custom merch.",
+      "",
+      `Type: ${t.name}`,
+      `Quantity: ${val("c-qty")}`,
+      `Idea: ${val("c-desc")}`,
+      `References: ${val("c-refs")}`,
+      `Contact: ${val("c-contact")}`,
+      "",
+      "I have read the terms.",
+    ].join("\n");
+  });
+
+  // digital commissions
+  setStatus("#comm-status", COMMISSIONS);
+  $("#comm-types").innerHTML = COMMISSIONS.types.map((t, i) => `
+    <article class="offer tint-${(i + 2) % 5}">
+      <h3>${esc(t.name)}</h3>
+      <p class="price">${money(t.price)}</p>
+      <p>${esc(t.desc)}</p>
+      <p class="meta">Time: ${esc(t.time)}</p>
+    </article>`).join("");
+  $("#m-type").innerHTML = COMMISSIONS.types.map(t => `<option value="${esc(t.id)}">${esc(t.name)}, ${money(t.price)}</option>`).join("");
+  $("#m-addons").innerHTML = COMMISSIONS.addons.map((a, i) =>
+    `<label><input type="checkbox" id="m-add-${i}"> ${esc(a.name)} (+${money(a.price)})</label>`).join("");
+
+  requestForm("m", COMMISSIONS, () => {
+    const t = COMMISSIONS.types.find(x => x.id === $("#m-type").value) || COMMISSIONS.types[0];
+    const add = COMMISSIONS.addons.filter((a, i) => $("#m-add-" + i).checked);
+    const total = t.price + add.reduce((s, a) => s + a.price, 0);
+    $("#m-total").textContent = `Estimated total: ${money(total)}. I'll confirm the final price in my reply.`;
+    return [
+      "Hi! I'd like to commission an artwork.",
+      "",
+      `Type: ${t.name} (${money(t.price)})`,
+      `Extras: ${add.length ? add.map(a => a.name).join(", ") : "none"}`,
+      `Use: ${$("#m-use").value}`,
+      `Description: ${val("m-desc")}`,
+      `References: ${val("m-refs")}`,
+      `Contact: ${val("m-contact")}`,
+      "",
+      `Estimated total: ${money(total)}`,
+      "I have read the terms.",
+    ].join("\n").replace(/\u00a0/g, " ");
   });
 
   renderFilters();

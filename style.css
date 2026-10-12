@@ -232,7 +232,7 @@ body.lock { overflow: hidden; }
 .sum .total { margin-top: 8px; padding-top: 14px; border-top: 1.5px solid var(--ink); font: 600 1.2rem/1.2 var(--head); }
 .hint { margin: 10px 0 0; font-size: .88rem; color: var(--muted); }
 
-#tpl {
+#tpl, .tpl {
   display: block; width: 100%; resize: vertical;
   padding: 12px 14px; font: 500 .88rem/1.5 var(--body); color: var(--ink);
   background: var(--paper); border: 1.5px solid rgba(43, 11, 31, .35); border-radius: 14px;
@@ -270,4 +270,66 @@ body.lock { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition: none !important; }
+}
+
+
+/* ============ HOME, CUSTOM MERCH, COMMISSIONS ============ */
+.title { overflow-wrap: anywhere; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.nav { overflow-x: auto; scrollbar-width: none; }
+.nav::-webkit-scrollbar { display: none; }
+.nav a, .nav .btn { flex-shrink: 0; white-space: nowrap; }
+
+.hero { padding-bottom: 64px; }
+.eyebrow { margin: 40px 0 0; font: 500 .8rem/1 var(--head); color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.hero .title { margin-top: 14px; }
+.lead.wide { max-width: 58ch; }
+.hero .lead { max-width: 58ch; margin-bottom: 28px; }
+
+.links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.link-card {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 18px 22px; background: #fff;
+  border: 1.5px solid var(--ink); border-radius: 20px; text-decoration: none;
+}
+.link-card strong { display: block; font: 700 1.05rem/1.2 var(--head); }
+.link-card .note { display: block; margin-top: 4px; font-size: .88rem; font-weight: 400; color: var(--muted); }
+.link-card .go { font-weight: 700; white-space: nowrap; }
+
+.sub-title { margin: 44px 0 14px; font: 600 1.1rem/1 var(--head); }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.tile { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; min-height: 150px; padding: 20px; border-radius: 24px; text-decoration: none; }
+.tile strong { font: 700 1.35rem/1.1 var(--head); letter-spacing: -.02em; }
+.tile span { font-size: .92rem; font-weight: 400; }
+
+.block { padding-bottom: 72px; }
+.status { display: inline-block; padding: 7px 14px; border: 1.5px solid var(--ink); border-radius: 999px; background: var(--t4); font-weight: 700; font-size: .85rem; }
+.status.closed { background: transparent; color: var(--muted); border-color: var(--line); }
+
+.offers { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; margin: 28px 0 8px; }
+.offer { display: flex; flex-direction: column; gap: 6px; padding: 20px; border-radius: 22px; }
+.offer h3 { margin: 0; font: 700 1.05rem/1.25 var(--head); }
+.offer .price { margin: 8px 0 0; font: 700 1.25rem/1 var(--head); }
+.offer p { margin: 0; font-size: .92rem; }
+.offer .meta { margin-top: auto; padding-top: 10px; color: var(--muted); }
+
+.how { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 0 0 32px; padding: 0; list-style: none; counter-reset: s; }
+.how li { counter-increment: s; padding: 16px 18px; background: #fff; border: 1.5px solid var(--ink); border-radius: 18px; }
+.how li::before { content: counter(s); display: grid; place-items: center; width: 26px; height: 26px; margin-bottom: 8px; border-radius: 50%; background: var(--hot); border: 1.5px solid var(--ink); font-weight: 700; font-size: .85rem; }
+
+.request { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(20px, 4vw, 48px); align-items: start; padding: clamp(18px, 3vw, 32px); background: #fff; border-radius: 28px; }
+.request h3 { margin: 0 0 16px; font: 600 1.1rem/1 var(--head); }
+.field textarea { font: 400 1rem/1.4 var(--body); width: 100%; resize: vertical; padding: 12px 14px; color: var(--ink); background: #fff; border: 1.5px solid rgba(43, 11, 31, .35); border-radius: 12px; }
+.field .hint { margin: 0; }
+.checks { margin: 0 0 12px; padding: 0; border: 0; min-width: 0; }
+.checks label { display: flex; align-items: center; gap: 10px; padding: 4px 0; cursor: pointer; }
+.checks input { width: 18px; height: 18px; accent-color: var(--hot); }
+.request .tpl { background: var(--paper); }
+
+@media (max-width: 860px) {
+  .request { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .link-card { flex-direction: column; align-items: flex-start; gap: 8px; }
 }
