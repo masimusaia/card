@@ -35,6 +35,12 @@ a:hover { background: var(--hot); text-decoration: none; }
 
 /* ============ НАВИГАЦИЯ ============ */
 #site-header { width: 100%; }
+#site-header { background: linear-gradient(135deg, var(--t0), var(--t1)); }
+#site-header img { display: block; width: 100%; height: auto; max-height: 420px; object-fit: cover; }
+
+@media (max-width: 520px) {
+  #site-header img { max-height: 220px; }
+}
 
 .nav {
   position: sticky; top: 0; z-index: 20;
