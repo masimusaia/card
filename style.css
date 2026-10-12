@@ -1,13 +1,13 @@
-/* ============ ПАЛИТРА И ШРИФТЫ ============ */
+/* ============ PALETTE AND FONTS ============ */
 :root {
-  --ink: #2b0b1f;          /* текст: тёмная слива */
+  --ink: #2b0b1f;          /* text: dark plum */
   --muted: rgba(43, 11, 31, .72);
   --line: rgba(43, 11, 31, .16);
-  --paper: #fff1f7;        /* фон страницы */
-  --hot: #ff2e8b;          /* главный акцент */
+  --paper: #fff1f7;        /* page background */
+  --hot: #ff2e8b;          /* main accent */
   --lilac: #e3d3ff;
 
-  /* пастельные подложки для заглушек картинок */
+  /* pastel backgrounds for image placeholders */
   --t0: #ffc7e0; --t1: #e3d3ff; --t2: #ffd9c2; --t3: #cdebff; --t4: #fff0a8;
 
   --head: "Unbounded", "Onest", system-ui, sans-serif;
@@ -33,14 +33,9 @@ a:hover { background: var(--hot); text-decoration: none; }
 
 .wrap { max-width: 1240px; margin: 0 auto; padding: 0 var(--pad); }
 
-/* ============ НАВИГАЦИЯ ============ */
-#site-header { width: 100%; }
-#site-header { background: linear-gradient(135deg, var(--t0), var(--t1)); }
+/* ============ NAVIGATION ============ */
+#site-header { width: 100%; background: linear-gradient(135deg, var(--t0), var(--t1)); }
 #site-header img { display: block; width: 100%; height: auto; max-height: 420px; object-fit: cover; }
-
-@media (max-width: 520px) {
-  #site-header img { max-height: 220px; }
-}
 
 .nav {
   position: sticky; top: 0; z-index: 20;
@@ -54,7 +49,7 @@ a:hover { background: var(--hot); text-decoration: none; }
 .nav a:hover { background: var(--lilac); }
 .nav .btn { margin-left: auto; }
 
-/* ============ КНОПКИ ============ */
+/* ============ BUTTONS ============ */
 .btn {
   font: 700 .95rem/1 var(--body);
   color: var(--ink); background: var(--hot);
@@ -79,7 +74,7 @@ a:hover { background: var(--hot); text-decoration: none; }
 
 .link { font: inherit; font-weight: 500; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-decoration-color: var(--hot); text-decoration-thickness: 2px; text-underline-offset: 3px; }
 
-/* ============ ЗАГОЛОВКИ ============ */
+/* ============ HEADINGS ============ */
 .title {
   margin: 56px 0 18px;
   font: 700 clamp(2.5rem, 9vw, 6rem)/.95 var(--head);
@@ -87,7 +82,7 @@ a:hover { background: var(--hot); text-decoration: none; }
 }
 .lead { margin: 0; max-width: 34ch; color: var(--muted); font-size: 1.05rem; }
 
-/* ============ ФИЛЬТРЫ ============ */
+/* ============ FILTERS ============ */
 .bar { display: flex; align-items: center; justify-content: space-between; min-height: 40px; margin-bottom: 14px; }
 .count { color: var(--muted); }
 #f-toggle { display: none; }
@@ -111,7 +106,7 @@ a:hover { background: var(--hot); text-decoration: none; }
 .chip:hover { background: var(--lilac); border-color: var(--ink); }
 .chip[aria-pressed="true"] { background: var(--hot); border-color: var(--ink); font-weight: 700; }
 
-/* ============ ТОВАРЫ ============ */
+/* ============ PRODUCTS ============ */
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 36px 22px; }
 
 .item { display: flex; flex-direction: column; }
@@ -142,12 +137,12 @@ a:hover { background: var(--hot); text-decoration: none; }
 
 .empty { grid-column: 1 / -1; padding: 30px 0; color: var(--muted); }
 
-/* ============ ТоС ============ */
+/* ============ TERMS ============ */
 .tos { display: grid; grid-template-columns: minmax(220px, 340px) 1fr; gap: clamp(24px, 6vw, 80px); align-items: start; padding-top: 24px; padding-bottom: 90px; }
 .tos-intro { position: sticky; top: 84px; }
 .tos-intro .title {
   margin-top: 24px;
-  font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+  font-size: clamp(2.2rem, 5.5vw, 3.6rem);  /* word fits the column */
   overflow-wrap: anywhere;
 }
 
@@ -175,7 +170,7 @@ tbody th { font-weight: 700; }
 .foot { padding: 24px var(--pad) 48px; border-top: 1px solid var(--line); }
 .foot p { margin: 0; max-width: 1240px; margin-inline: auto; }
 
-/* ============ КОРЗИНА ============ */
+/* ============ CART ============ */
 .overlay { position: fixed; inset: 0; z-index: 30; background: rgba(43, 11, 31, .4); opacity: 0; pointer-events: none; transition: opacity .25s; }
 .overlay.show { opacity: 1; pointer-events: auto; }
 body.lock { overflow: hidden; }
@@ -252,7 +247,7 @@ body.lock { overflow: hidden; }
 }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
-/* ============ ПЛАНШЕТ И ТЕЛЕФОН ============ */
+/* ============ TABLET AND PHONE ============ */
 @media (max-width: 860px) {
   .shop-layout { grid-template-columns: 1fr; gap: 0; }
   .filters { display: none; position: static; margin-bottom: 28px; padding: 18px; background: #fff; border-radius: 20px; }
@@ -268,6 +263,7 @@ body.lock { overflow: hidden; }
   .item h3 { font-size: .95rem; }
   .sticker { right: 6px; bottom: 6px; padding: 7px 10px; font-size: .75rem; }
   .pills { top: 8px; left: 8px; right: 8px; }
+  #site-header img { max-height: 220px; }
   .cart { border-radius: 0; }
 }
 

@@ -1,13 +1,13 @@
 /* ============================================================
-   ✨ НАСТРОЙКИ МАГАЗИНА ✨
-   Это единственный файл, который нужно править, чтобы
-   поменять товары, цены и доставку. Всё остальное подтянется само.
+   ✨ SHOP SETTINGS ✨
+   This is the only file you need to edit to change
+   products, prices and shipping. Everything else follows automatically.
    ============================================================ */
 
 const SHOP = {
   currency: "₽",
 
-  // Куда покупатель отправляет шаблон заказа
+  // Where the buyer sends the order template
   contact: {
     name: "Telegram",
     text: "@your_nick",
@@ -15,36 +15,36 @@ const SHOP = {
   },
 
 
-  /* Доставка. Стоимость считается так:
-       base + (вес заказа в граммах / 100, округлённо вверх) × per100g
-     freeFrom — сумма товаров, от которой доставка бесплатная (null = бесплатной нет) */
+  /* Shipping. The cost is calculated as:
+       base + (order weight in grams / 100, rounded up) × per100g
+     freeFrom — items total from which shipping is free (null = never free) */
   zones: [
-    { id: "ru",    name: "Россия",             days: "5–14 дней",  base: 150, per100g: 30,  freeFrom: 3000 },
-    { id: "cis",   name: "Беларусь, Казахстан", days: "10–25 дней", base: 300, per100g: 60,  freeFrom: null },
-    { id: "world", name: "Другие страны",      days: "14–45 дней", base: 500, per100g: 100, freeFrom: null },
+    { id: "ru",    name: "Russia",               days: "5–14 days",  base: 150, per100g: 30,  freeFrom: 3000 },
+    { id: "cis",   name: "Belarus, Kazakhstan",  days: "10–25 days", base: 300, per100g: 60,  freeFrom: null },
+    { id: "world", name: "Other countries",      days: "14–45 days", base: 500, per100g: 100, freeFrom: null },
   ],
 };
 
 /* ============================================================
-   ТОВАРЫ
-   id       — уникальный, без пробелов (k1, k2, s1…)
-   type     — "Брелоки" или "Стикеры" (появится как фильтр)
-   fandom   — фандом (для своих рисунков можно "Оригинал")
-   character— персонаж
-   price    — цена в рублях
-   weight   — вес в граммах (нужен для расчёта доставки)
-   img      — путь к картинке, например "img/mimi-keychain.jpg" (если пусто, будет цветная заглушка с буквой)
-   desc     — короткое описание (можно оставить "")
-   soldOut  — true, если закончилось
+   PRODUCTS
+   id        — unique, no spaces (k1, k2, s1…)
+   type      — "Keychains" or "Stickers" (becomes a filter)
+   fandom    — fandom (for your own art use "Original")
+   character — character
+   price     — price in rubles
+   weight    — weight in grams (used for shipping)
+   img       — image path, e.g. "img/mimi-keychain.jpg" (if empty, a colored placeholder with a letter is shown)
+   desc      — short description (can be "")
+   soldOut   — true if out of stock
    ============================================================ */
 const PRODUCTS = [
-  { id: "k1", name: "Брелок «Мими с бантом»",   type: "Брелоки", fandom: "Оригинал", character: "Мими",         price: 350, weight: 20, img: "", desc: "Акрил, двусторонняя печать, 6 см." },
-  { id: "k2", name: "Брелок «Лулу и сердечки»", type: "Брелоки", fandom: "Оригинал", character: "Лулу",         price: 350, weight: 20, img: "", desc: "Акрил с блёстками внутри, 6 см." },
-  { id: "s1", name: "Стикерпак «Мими»",         type: "Стикеры", fandom: "Оригинал", character: "Мими",         price: 220, weight: 15, img: "", desc: "6 виниловых стикеров." },
-  { id: "s2", name: "Стикер «Лулу»",            type: "Стикеры", fandom: "Оригинал", character: "Лулу",         price: 120, weight: 5,  img: "", desc: "Виниловый, водостойкий, 7 см." },
-  { id: "k3", name: "Брелок «Персонаж 1»",      type: "Брелоки", fandom: "Фандом А", character: "Персонаж 1",   price: 400, weight: 25, img: "", desc: "Акрил, 7 см." },
-  { id: "s3", name: "Стикер «Персонаж 1»",      type: "Стикеры", fandom: "Фандом А", character: "Персонаж 1",   price: 130, weight: 5,  img: "", desc: "" },
-  { id: "s4", name: "Стикер «Персонаж 2»",      type: "Стикеры", fandom: "Фандом А", character: "Персонаж 2",   price: 130, weight: 5,  img: "", desc: "" },
-  { id: "k4", name: "Брелок «Персонаж 3»",      type: "Брелоки", fandom: "Фандом Б", character: "Персонаж 3",   price: 400, weight: 25, img: "", desc: "Акрил, 7 см.", soldOut: true },
-  { id: "s5", name: "Стикерпак «Фандом Б»",     type: "Стикеры", fandom: "Фандом Б", character: "Персонаж 3",   price: 250, weight: 15, img: "", desc: "5 виниловых стикеров." },
+  { id: "k1", name: "Mimi with a Bow Keychain",   type: "Keychains", fandom: "Original", character: "Mimi",        price: 350, weight: 20, img: "", desc: "Acrylic, double-sided print, 6 cm." },
+  { id: "k2", name: "Lulu and Hearts Keychain",   type: "Keychains", fandom: "Original", character: "Lulu",        price: 350, weight: 20, img: "", desc: "Acrylic with glitter inside, 6 cm." },
+  { id: "s1", name: "Mimi Sticker Pack",          type: "Stickers",  fandom: "Original", character: "Mimi",        price: 220, weight: 15, img: "", desc: "6 vinyl stickers." },
+  { id: "s2", name: "Lulu Sticker",               type: "Stickers",  fandom: "Original", character: "Lulu",        price: 120, weight: 5,  img: "", desc: "Vinyl, waterproof, 7 cm." },
+  { id: "k3", name: "Character 1 Keychain",       type: "Keychains", fandom: "Fandom A", character: "Character 1", price: 400, weight: 25, img: "", desc: "Acrylic, 7 cm." },
+  { id: "s3", name: "Character 1 Sticker",        type: "Stickers",  fandom: "Fandom A", character: "Character 1", price: 130, weight: 5,  img: "", desc: "" },
+  { id: "s4", name: "Character 2 Sticker",        type: "Stickers",  fandom: "Fandom A", character: "Character 2", price: 130, weight: 5,  img: "", desc: "" },
+  { id: "k4", name: "Character 3 Keychain",       type: "Keychains", fandom: "Fandom B", character: "Character 3", price: 400, weight: 25, img: "", desc: "Acrylic, 7 cm.", soldOut: true },
+  { id: "s5", name: "Fandom B Sticker Pack",      type: "Stickers",  fandom: "Fandom B", character: "Character 3", price: 250, weight: 15, img: "", desc: "5 vinyl stickers." },
 ];

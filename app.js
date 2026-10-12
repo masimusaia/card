@@ -2,7 +2,7 @@
   "use strict";
 
   const $ = (s, r = document) => r.querySelector(s);
-  const nf = new Intl.NumberFormat("ru-RU");
+  const nf = new Intl.NumberFormat("en-US");
   const money = n => nf.format(n) + "\u00a0" + SHOP.currency;
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const byId = id => PRODUCTS.find(p => p.id === id);
@@ -13,7 +13,7 @@
   const tint = p => "tint-" + (FANDOMS.indexOf(p.fandom) % 5);
   const letter = p => esc((p.character || p.name).trim().charAt(0).toUpperCase());
 
-  /* ---------- состояние ---------- */
+  /* ---------- state ---------- */
   const filters = { fandom: "", character: "", type: "" };
   let cart = {};
   const buyer = { zone: SHOP.zones[0].id, name: "", address: "", contact: "" };
@@ -22,7 +22,7 @@
     const d = JSON.parse(localStorage.getItem(KEY) || "{}");
     cart = d.cart || {};
     Object.assign(buyer, d.buyer || {});
-  } catch (e) { /* хранилище недоступно, работаем без него */ }
+  } catch (e) { /* storage unavailable, work without it */ }
 
   for (const id in cart) {
     const p = byId(id);
@@ -34,7 +34,7 @@
     try { localStorage.setItem(KEY, JSON.stringify({ cart, buyer })); } catch (e) { /* ignore */ }
   };
 
-  /* ---------- общие кусочки ---------- */
+  /* ---------- shared pieces ---------- */
   let toastTimer;
   function toast(text) {
     const t = $("#toast");
@@ -44,10 +44,10 @@
     toastTimer = setTimeout(() => t.classList.remove("show"), 1800);
   }
 
-  /* ---------- фильтры ---------- */
+  /* ---------- filters ---------- */
   function chipRow(sel, values, key) {
     $(sel).innerHTML = ["", ...values].map(v =>
-      `<button type="button" class="chip" data-key="${key}" data-val="${esc(v)}" aria-pressed="${filters[key] === v}">${v ? esc(v) : "все"}</button>`
+      `<button type="button" class="chip" data-key="${key}" data-val="${esc(v)}" aria-pressed="${filters[key] === v}">${v ? esc(v) : "all"}</button>`
     ).join("");
   }
 
@@ -59,8 +59,8 @@
     chipRow("#f-character", chars, "character");
   }
 
-  /* ---------- магазин ---------- */
-  const addLabel = q => q ? `В корзине: ${q}` : "В корзину";
+  /* ---------- shop ---------- */
+  const addLabel = q => q ? `In cart: ${q}` : "Add to cart";
 
   function card(p) {
     const q = cart[p.id] || 0;
@@ -70,13 +70,13 @@
     return `<article class="item${p.soldOut ? " sold" : ""}">
       <div class="shot ${tint(p)}">
         ${art}
-        <div class="pills"><span class="pill">${esc(p.type)}</span>${p.soldOut ? '<span class="pill dark">нет в наличии</span>' : ""}</div>
+        <div class="pills"><span class="pill">${esc(p.type)}</span>${p.soldOut ? '<span class="pill dark">sold out</span>' : ""}</div>
         <span class="sticker">${money(p.price)}</span>
       </div>
       <h3>${esc(p.name)}</h3>
       <p class="meta">${esc(p.fandom)}, ${esc(p.character)}</p>
       ${p.desc ? `<p class="desc">${esc(p.desc)}</p>` : ""}
-      <button type="button" class="btn${q ? "" : " ghost"}" data-add="${esc(p.id)}"${p.soldOut ? " disabled" : ""}>${p.soldOut ? "Нет в наличии" : addLabel(q)}</button>
+      <button type="button" class="btn${q ? "" : " ghost"}" data-add="${esc(p.id)}"${p.soldOut ? " disabled" : ""}>${p.soldOut ? "Sold out" : addLabel(q)}</button>
     </article>`;
   }
 
@@ -86,13 +86,13 @@
       (!filters.character || p.character === filters.character) &&
       (!filters.type || p.type === filters.type));
     const active = Object.values(filters).filter(Boolean).length;
-    $("#count").textContent = list.length ? `Найдено: ${list.length}` : "";
+    $("#count").textContent = list.length ? `Found: ${list.length}` : "";
     $("#reset").hidden = !active;
     $("#f-badge").hidden = !active;
     $("#f-badge").textContent = active;
     $("#grid").innerHTML = list.length
       ? list.map(card).join("")
-      : `<p class="empty">Ничего не нашлось. Попробуй другое сочетание фильтров.</p>`;
+      : `<p class="empty">Nothing found. Try a different combination of filters.</p>`;
   }
 
   function refreshAddButtons() {
@@ -104,7 +104,7 @@
     });
   }
 
-  /* ---------- корзина: подсчёты ---------- */
+  /* ---------- cart: calculations ---------- */
   function totals() {
     const rows = Object.entries(cart).map(([id, q]) => ({ p: byId(id), q })).filter(r => r.p);
     const sub = rows.reduce((s, r) => s + r.p.price * r.q, 0);
@@ -123,21 +123,21 @@
     const lines = t.rows.map((r, i) =>
       `${i + 1}. ${r.p.name} (${r.p.fandom}, ${r.p.character}): ${r.q} × ${money(r.p.price)} = ${money(r.p.price * r.q)}`);
     return [
-      "Привет! Хочу сделать заказ.",
+      "Hi! I'd like to place an order.",
       "",
-      "Заказ:",
+      "Order:",
       ...lines,
       "",
-      `Товары: ${money(t.sub)}`,
-      `Доставка (${t.z.name}): ${t.free ? "бесплатно" : money(t.ship)}`,
-      `Итого: ${money(t.total)}`,
+      `Items: ${money(t.sub)}`,
+      `Shipping (${t.z.name}): ${t.free ? "free" : money(t.ship)}`,
+      `Total: ${money(t.total)}`,
       "",
-      "Данные получателя:",
-      `ФИО: ${buyer.name.trim() || "—"}`,
-      `Адрес и индекс: ${buyer.address.trim() || "—"}`,
-      `Связь: ${buyer.contact.trim() || "—"}`,
+      "Recipient details:",
+      `Full name: ${buyer.name.trim() || "—"}`,
+      `Address and postal code: ${buyer.address.trim() || "—"}`,
+      `Contact: ${buyer.contact.trim() || "—"}`,
       "",
-      "С условиями (ТоС) ознакомился(лась).",
+      "I have read the terms.",
     ].join("\n").replace(/\u00a0/g, " ");
   }
 
@@ -145,7 +145,7 @@
     $("#tpl").value = t.rows.length ? template(t) : "";
   }
 
-  /* ---------- корзина: отрисовка ---------- */
+  /* ---------- cart: rendering ---------- */
   function renderCart() {
     const t = totals();
     $("#cart-count").textContent = t.count;
@@ -159,26 +159,26 @@
           <strong>${esc(p.name)}</strong>
           <span class="sub">${esc(p.fandom)}, ${esc(p.character)}</span>
           <span class="step">
-            <button type="button" data-dec="${esc(p.id)}" aria-label="Меньше">−</button>
+            <button type="button" data-dec="${esc(p.id)}" aria-label="Decrease">−</button>
             <output>${q}</output>
-            <button type="button" data-inc="${esc(p.id)}" aria-label="Больше">+</button>
+            <button type="button" data-inc="${esc(p.id)}" aria-label="Increase">+</button>
           </span>
         </div>
         <div class="end">
           <span class="lp">${money(p.price * q)}</span>
-          <button type="button" class="x" data-del="${esc(p.id)}" aria-label="Убрать: ${esc(p.name)}">✕</button>
+          <button type="button" class="x" data-del="${esc(p.id)}" aria-label="Remove: ${esc(p.name)}">✕</button>
         </div>
       </li>`).join("");
 
     $("#sum-items").textContent = money(t.sub);
-    $("#sum-ship-label").textContent = `Доставка (${t.z.days})`;
-    $("#sum-ship").textContent = t.free ? "бесплатно" : money(t.ship);
+    $("#sum-ship-label").textContent = `Shipping (${t.z.days})`;
+    $("#sum-ship").textContent = t.free ? "free" : money(t.ship);
     $("#sum-total").textContent = money(t.total);
 
     const left = t.z.freeFrom ? t.z.freeFrom - t.sub : 0;
     $("#ship-hint").textContent = t.rows.length && t.z.freeFrom && !t.free
-      ? `До бесплатной доставки по этому направлению не хватает ${money(left)}.`
-      : "Итоговую сумму доставки я подтвержу в ответном сообщении.";
+      ? `${money(left)} more for free shipping to this destination.`
+      : "I'll confirm the final shipping cost in my reply.";
 
     renderTemplate(t);
     refreshAddButtons();
@@ -192,7 +192,7 @@
     renderCart();
   }
 
-  /* ---------- открыть и закрыть корзину ---------- */
+  /* ---------- open and close the cart ---------- */
   const cartEl = $("#cart");
   let lastFocus = null;
   function openCart() {
@@ -211,7 +211,7 @@
     if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
 
-  /* ---------- копирование ---------- */
+  /* ---------- copying ---------- */
   async function copyTemplate() {
     const ta = $("#tpl");
     let ok = false;
@@ -219,15 +219,15 @@
       ta.select();
       try { ok = document.execCommand("copy"); } catch (e2) { ok = false; }
     }
-    toast(ok ? "Шаблон скопирован. Отправь его автору" : "Не вышло скопировать, выдели текст вручную");
+    toast(ok ? "Template copied. Send it to the author" : "Couldn't copy, select the text manually");
     if (ok) {
       const b = $("#copy");
-      b.textContent = "Скопировано";
-      setTimeout(() => { b.textContent = "Скопировать шаблон"; }, 2000);
+      b.textContent = "Copied";
+      setTimeout(() => { b.textContent = "Copy template"; }, 2000);
     }
   }
 
-  /* ---------- события ---------- */
+  /* ---------- events ---------- */
   $("#filters").addEventListener("click", e => {
     const c = e.target.closest(".chip");
     if (!c) return;
@@ -252,7 +252,7 @@
     if (!b || b.disabled) return;
     const id = b.dataset.add;
     setQty(id, (cart[id] || 0) + 1);
-    toast("Добавлено в корзину");
+    toast("Added to cart");
   });
 
   $("#cart-items").addEventListener("click", e => {
@@ -277,12 +277,12 @@
     el.addEventListener("input", () => { buyer[key] = el.value; save(); renderTemplate(); });
   });
 
-  /* ---------- старт ---------- */
+  /* ---------- start ---------- */
   $("#zone").innerHTML = SHOP.zones.map(z => `<option value="${esc(z.id)}">${esc(z.name)}</option>`).join("");
   $("#zone").value = buyer.zone;
 
   $("#tos-zones").innerHTML = SHOP.zones.map(z =>
-    `<tr><th scope="row">${esc(z.name)}</th><td>${esc(z.days)}</td><td>${money(z.base)}</td><td>${money(z.per100g)}</td><td>${z.freeFrom ? "от " + money(z.freeFrom) : "нет"}</td></tr>`
+    `<tr><th scope="row">${esc(z.name)}</th><td>${esc(z.days)}</td><td>${money(z.base)}</td><td>${money(z.per100g)}</td><td>${z.freeFrom ? "from " + money(z.freeFrom) : "none"}</td></tr>`
   ).join("");
 
   document.querySelectorAll("[data-contact]").forEach(a => {
